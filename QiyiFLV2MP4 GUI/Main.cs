@@ -69,15 +69,33 @@ namespace QiyiFLV2MP4_GUI
 
         private void button4_Click(object sender, EventArgs e)
         {
-            button4.Enabled = false;
-            foreach (string s in listBox1.Items)
+
+            DialogResult dr = MessageBox.Show("封装完成后是否删除FLV文件？", "提示", MessageBoxButtons.OKCancel);
+            if (dr == DialogResult.OK)
             {
-                label3.Text = s;
-                if (!convert(s))
+                //用户选择确认的操作
+                foreach (string s in listBox1.Items)
                 {
-                    MessageBox.Show("转换失败，请尝试重试");
+                    label3.Text = s;
+                    if (!convert(s,true))
+                    {
+                        MessageBox.Show("转换失败，请尝试重试");
+                    }
                 }
             }
+            else if (dr == DialogResult.Cancel)
+            {
+                //用户选择取消的操作
+                foreach (string s in listBox1.Items)
+                {
+                    label3.Text = s;
+                    if (!convert(s,false))
+                    {
+                        MessageBox.Show("转换失败，请尝试重试");
+                    }
+                }
+            }
+            button4.Enabled = false;
             label3.Text = listBox1.Items.Count.ToString() + "个FLV文件封装完毕！列表已清空！";
             listBox1.Items.Clear();
         }
@@ -86,10 +104,8 @@ namespace QiyiFLV2MP4_GUI
         private static StringBuilder sortOutput = null;
         public static string inputPath = "";
 
-        private bool convert(string args)
+        private bool convert(string args,bool delete)
         {
-            int argCount = 1;
-            int argIndex = 0;
             bool extractVideo = false;
             bool extractAudio = false;
             bool extractTimeCodes = false;
@@ -165,6 +181,8 @@ namespace QiyiFLV2MP4_GUI
                 File.Delete(inputPath.Substring(0, inputPath.Length - 4) + ".aac");
             if (File.Exists(inputPath.Substring(0, inputPath.Length - 4) + ".264"))
                 File.Delete(inputPath.Substring(0, inputPath.Length - 4) + ".264");
+            if (delete)
+                File.Delete(inputPath);
             richTextBox1.Text += "FLV文件" + inputPath + "已成功重封装为" + inputPath.Substring(0, inputPath.Length - 4) + ".mp4！\r\n";
             return true;
         }
@@ -278,6 +296,14 @@ namespace QiyiFLV2MP4_GUI
         {
             richTextBox1.SelectionStart = richTextBox1.Text.Length;
             richTextBox1.ScrollToCaret();
+        }
+
+        private void Main_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            File.Delete("js.dll");
+            File.Delete("js32.dll");
+            File.Delete("libgpac.dll");
+            File.Delete("MP4Box.exe");
         }
     }
 }

@@ -175,6 +175,7 @@
             this.Name = "Main";
             this.ShowIcon = false;
             this.Text = "爱奇艺FLV重封装工具";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_FormClosed);
             this.Load += new System.EventHandler(this.Main_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
