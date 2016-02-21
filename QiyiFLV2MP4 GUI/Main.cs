@@ -112,6 +112,18 @@ namespace QiyiFLV2MP4_GUI
 
         private bool convert(string args,bool delete)
         {
+            if(File.Exists(args.Substring(0, args.Length - 4) + ".mp4"))
+            {
+                DialogResult dr = MessageBox.Show("发现重名文件 "+ args.Substring(0, args.Length - 4) + ".mp4 ，是否删除？", "提示", MessageBoxButtons.OKCancel);
+                if (dr == DialogResult.OK)
+                {
+                    File.Delete(args.Substring(0, args.Length - 4) + ".mp4");
+                }
+                else if (dr == DialogResult.Cancel)
+                {
+                    return false;
+                }
+            }
             bool extractVideo = false;
             bool extractAudio = false;
             bool extractTimeCodes = false;
