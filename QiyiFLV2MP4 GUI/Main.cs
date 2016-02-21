@@ -19,6 +19,8 @@ namespace QiyiFLV2MP4_GUI
             InitializeComponent();
         }
 
+        public int ConvertSuccess = 0;
+
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
@@ -102,7 +104,8 @@ namespace QiyiFLV2MP4_GUI
                 }
             }
             button4.Enabled = false;
-            label3.Text = listBox1.Items.Count.ToString() + "个FLV文件封装完毕！列表已清空！";
+            MessageBox.Show(ConvertSuccess.ToString() + "个FLV文件封装成功！" + (listBox1.Items.Count - ConvertSuccess).ToString() + "个FLV文件封装失败！列表已清空！");
+            label3.Text = "尚未执行封装操作";
             listBox1.Items.Clear();
         }
 
@@ -218,6 +221,7 @@ namespace QiyiFLV2MP4_GUI
             if (delete)
                 File.Delete(inputPath);
             richTextBox1.Text = "";
+            ConvertSuccess++;
             return true;
         }
 
