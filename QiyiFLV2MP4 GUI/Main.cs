@@ -79,7 +79,7 @@ namespace QiyiFLV2MP4_GUI
                     label3.Text = s;
                     if (!convert(s,true))
                     {
-                        MessageBox.Show("转换失败，请尝试重试");
+                        MessageBox.Show("转换失败，请尝试重试！", "提示");
                     }
                 }
             }
@@ -91,7 +91,7 @@ namespace QiyiFLV2MP4_GUI
                     label3.Text = s;
                     if (!convert(s,false))
                     {
-                        MessageBox.Show("转换失败，请尝试重试");
+                        MessageBox.Show("转换失败，请尝试重试！", "提示");
                     }
                 }
             }
@@ -106,6 +106,12 @@ namespace QiyiFLV2MP4_GUI
 
         private bool convert(string args,bool delete)
         {
+            if (args.Contains("•"))
+            {
+                MessageBox.Show("文件路径中发现非法字符\"•\"，请重命名 " + args + " 后重试！", "温馨提示");
+                return false;
+            }
+
             bool extractVideo = false;
             bool extractAudio = false;
             bool extractTimeCodes = false;
@@ -158,6 +164,17 @@ namespace QiyiFLV2MP4_GUI
             catch (Exception ex)
             {
                 richTextBox1.Text += "Error: " + ex.Message + "\r\n";
+                return false;
+            }
+
+            if (!File.Exists(inputPath.Substring(0, inputPath.Length - 4) + ".aac"))
+            {
+                MessageBox.Show("数据文件异常，请检查FLV文件后尝试！", "温馨提示");
+                return false;
+            }
+            if (!File.Exists(inputPath.Substring(0, inputPath.Length - 4) + ".264"))
+            {
+                MessageBox.Show("数据文件异常，请检查FLV文件后尝试！", "温馨提示");
                 return false;
             }
 
