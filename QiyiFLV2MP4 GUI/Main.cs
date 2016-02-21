@@ -198,9 +198,14 @@ namespace QiyiFLV2MP4_GUI
                 File.Delete(inputPath.Substring(0, inputPath.Length - 4) + ".aac");
             if (File.Exists(inputPath.Substring(0, inputPath.Length - 4) + ".264"))
                 File.Delete(inputPath.Substring(0, inputPath.Length - 4) + ".264");
+            if(!richTextBox1.Text.Contains("ISO File Writing"))
+            {
+                MessageBox.Show("文件路径中可能存在非法字符，请重命名 " + args + " 后重试！", "温馨提示");
+                return false;
+            }
             if (delete)
                 File.Delete(inputPath);
-            richTextBox1.Text += "FLV文件" + inputPath + "已成功重封装为" + inputPath.Substring(0, inputPath.Length - 4) + ".mp4！\r\n";
+            richTextBox1.Text = "";
             return true;
         }
 
